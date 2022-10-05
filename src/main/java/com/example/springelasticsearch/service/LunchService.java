@@ -3,7 +3,6 @@ package com.example.springelasticsearch.service;
 import com.example.springelasticsearch.model.Lunch;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.GetQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -26,6 +25,6 @@ public class LunchService {
     }
 
     public Lunch findById(final String lunchId) {
-        return elasticsearchOperations.queryForObject(GetQuery.getById(lunchId), Lunch.class);
+        return elasticsearchOperations.get(lunchId, Lunch.class, IndexCoordinates.of("lunch"));
     }
 }
