@@ -1,5 +1,7 @@
 package com.example.springelasticsearch;
 
+import com.example.springelasticsearch.model.Lunch;
+import com.example.springelasticsearch.service.LunchService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,19 @@ class SpringElasticsearchApplicationTests {
     @Autowired
     ElasticsearchOperations elasticsearchOperations;
 
+    @Autowired
+    LunchService lunchService;
+
     @Test
     void testElasticsearchIndexesCreated() {
         Assertions.assertTrue(elasticsearchOperations.indexOps(IndexCoordinates.of("lunch")).exists());
+    }
+
+    @Test
+    void testElasticsearchSave() {
+        lunchService.save(new Lunch("l1", "pizza"));
+        lunchService.save(new Lunch("l2", "sandwich"));
+        Assertions.assertEquals("l1", lunchService.findById("l1").getLunchId());
+        Assertions.assertEquals("sandwich", lunchService.findById("l2").getMainCourse());
     }
 }
